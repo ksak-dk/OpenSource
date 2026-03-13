@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+    <h1 style="margin:0 0 6px;">{{ recipe.title }}</h1>
+    <div class="muted">Category: {{ recipe.category }} • Created: {{ recipe.created_at }}</div>
+</div>
+
+<div class="card">
+    <h2>Ingredients</h2>
+    {% if recipe.ingredients %}
+    <pre style="white-space:pre-wrap;">{{ recipe.ingredients }}</pre>
+    {% else %}
+    <p class="muted">No ingredients provided.</p>
+    {% endif %}
+</div>
+
+<div class="card">
+    <h2>Steps</h2>
+    {% if recipe.steps %}
+    <pre style="white-space:pre-wrap;">{{ recipe.steps }}</pre>
+    {% else %}
+    <p class="muted">No steps provided.</p>
+    {% endif %}
+</div>
+
+<a class="btn secondary" href="{{ url_for('index') }}">Back to list</a>
+{% endblock %}

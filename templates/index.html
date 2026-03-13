@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+    <h1>Recipe Vault</h1>
+    <p class="muted">A simple collection of your recipes.</p>
+    <a class="btn" href="{{ url_for('add_recipe') }}">Add a recipe</a>
+</div>
+
+{% if recipes|length == 0 %}
+<div class="card">
+    <p>No recipes yet. Click <strong>Add a recipe</strong> to create your first one.</p>
+</div>
+{% else %}
+{% for r in recipes %}
+<div class="card">
+    <h2 style="margin:0 0 6px;">{{ r.title }}</h2>
+    <div class="muted">Category: {{ r.category }} • Created: {{ r.created_at }}</div>
+    <div style="margin-top:10px;">
+        <a class="btn secondary" href="{{ url_for('recipe_detail', recipe_id=r.id) }}">View details</a>
+    </div>
+</div>
+{% endfor %}
+{% endif %}
+{% endblock %}

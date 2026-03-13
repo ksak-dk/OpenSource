@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+    <h1>Add Recipe</h1>
+
+    {% if error %}
+    <div class="error">{{ error }}</div>
+    {% endif %}
+
+    <form method="post">
+        <div class="row">
+            <div>
+                <label for="title">Title *</label>
+                <input id="title" name="title" value="{{ form.get('title','') }}" placeholder="e.g. Garlic Fried Rice"
+                    required />
+            </div>
+            <div>
+                <label for="category">Category</label>
+                <input id="category" name="category" value="{{ form.get('category','') }}"
+                    placeholder="e.g. Main / Dessert / Drink" />
+            </div>
+        </div>
+
+        <label for="ingredients">Ingredients</label>
+        <textarea id="ingredients" name="ingredients" rows="6"
+            placeholder="- rice&#10;- garlic&#10;- soy sauce">{{ form.get('ingredients','') }}</textarea>
+
+        <label for="steps">Steps</label>
+        <textarea id="steps" name="steps" rows="8"
+            placeholder="1) Prep ingredients&#10;2) Cook...">{{ form.get('steps','') }}</textarea>
+
+        <div style="margin-top:12px;">
+            <button class="btn" type="submit">Save</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

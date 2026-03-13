@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{{ title or "Recipe Vault" }}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background: #f7f7f7;
+        }
+
+        header {
+            background: #111827;
+            color: white;
+            padding: 16px;
+        }
+
+        header a {
+            color: white;
+            text-decoration: none;
+            margin-right: 12px;
+        }
+
+        main {
+            max-width: 900px;
+            margin: 18px auto;
+            padding: 0 14px;
+        }
+
+        .card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 10px;
+            padding: 14px;
+            margin: 12px 0;
+        }
+
+        .muted {
+            color: #6b7280;
+            font-size: 0.95em;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 12px;
+            background: #2563eb;
+            color: white;
+            border-radius: 8px;
+            text-decoration: none;
+            border: 0;
+            cursor: pointer;
+        }
+
+        .btn.secondary {
+            background: #374151;
+        }
+
+        input,
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            box-sizing: border-box;
+        }
+
+        label {
+            display: block;
+            margin: 10px 0 6px;
+            font-weight: 600;
+        }
+
+        .error {
+            color: #b91c1c;
+            margin: 10px 0;
+        }
+
+        .row {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .row>div {
+            flex: 1 1 240px;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <nav>
+            <a href="{{ url_for('index') }}">Home</a>
+            <a href="{{ url_for('add_recipe') }}">Add Recipe</a>
+        </nav>
+    </header>
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+</body>
+
+</html>
