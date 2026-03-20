@@ -30,7 +30,6 @@ def save_recipes(recipes):
 @app.route("/")
 def index():
     recipes = load_recipes()
-    # newest first
     recipes = sorted(recipes, key=lambda r: r.get("created_at", ""), reverse=True)
     return render_template("index.html", recipes=recipes)
 
