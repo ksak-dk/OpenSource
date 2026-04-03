@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, abort
 import json
 import os
-from datetime import datetime
+from datetime import datetime, timezone
 from uuid import uuid4
 
 app = Flask(__name__)
@@ -25,6 +25,18 @@ def load_recipes():
 def save_recipes(recipes):
     with open(DATA_FILE, "w", encoding="utf-8") as f:
         json.dump(recipes, f, ensure_ascii=False, indent=2)
+
+
+def build_recipe(title, category, ingredients, steps):
+    """Create and return a new recipe dict from the given field values."""
+    return {
+        "id": str(uuid4())[:8],
+        "title": title,
+        "category": category or "Uncategorized",
+        "ingredients": ingredients,
+        "steps": steps,
+        "created_at": datetime.now(timezone.utc).isoformat(timespec="seconds").replace("+00:00", "Z"),
+    }
 
 
 @app.route("/")
@@ -51,14 +63,7 @@ def add_recipe():
             )
 
         recipes = load_recipes()
-        new_recipe = {
-            "id": str(uuid4())[:8],
-            "title": title,
-            "category": category or "Uncategorized",
-            "ingredients": ingredients,
-            "steps": steps,
-            "created_at": datetime.utcnow().isoformat(timespec="seconds") + "Z",
-        }
+        new_recipe = build_recipe(title, category, ingredients, steps)
         recipes.append(new_recipe)
         save_recipes(recipes)
         return redirect(url_for("recipe_detail", recipe_id=new_recipe["id"]))
