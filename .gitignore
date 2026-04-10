@@ -15,6 +15,9 @@ instance/
 # Sphinx build output
 docs/_build/
 
+# Pytest
+.pytest_cache/
+
 # OS
 .DS_Store
 Thumbs.db

@@ -15,7 +15,7 @@ from flask import Flask, render_template, request, redirect, url_for, abort
 from flasgger import Swagger
 import json
 import os
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import List, Dict, Any, Optional
 from uuid import uuid4
 
@@ -110,6 +110,45 @@ def save_recipes(recipes: List[Dict[str, Any]]) -> None:
         json.dump(recipes, f, ensure_ascii=False, indent=2)
 
 
+def build_recipe(title: str, category: str, ingredients: str, steps: str) -> Dict[str, Any]:
+    """Create and return a new recipe dict from the given field values.
+    
+    Encapsulates recipe creation logic, making it testable and reusable.
+    Generates a unique 8-character ID and adds a UTC timestamp.
+    
+    Args:
+        title (str): Recipe title (must not be blank).
+        category (str): Recipe category (e.g., Main, Dessert). 
+            If empty or None, defaults to "Uncategorized".
+        ingredients (str): Ingredients list (free-form text).
+        steps (str): Preparation steps (free-form text).
+        
+    Returns:
+        Dict[str, Any]: A new recipe dictionary with keys:
+            - id: Unique 8-character identifier
+            - title: The recipe title
+            - category: The recipe category
+            - ingredients: Ingredients list
+            - steps: Preparation steps
+            - created_at: ISO format UTC timestamp
+            
+    Example:
+        >>> recipe = build_recipe("Pasta", "Main", "noodles, sauce", "boil and mix")
+        >>> recipe["title"]
+        'Pasta'
+        >>> "id" in recipe
+        True
+    """
+    return {
+        "id": str(uuid4())[:8],
+        "title": title,
+        "category": category or "Uncategorized",
+        "ingredients": ingredients,
+        "steps": steps,
+        "created_at": datetime.now(timezone.utc).isoformat(timespec="seconds").replace("+00:00", "Z"),
+    }
+
+
 # ---------------------------------------------------------------------------
 # Routes
 # ---------------------------------------------------------------------------
@@ -198,14 +237,7 @@ def add_recipe():
             )
 
         recipes = load_recipes()
-        new_recipe: Dict[str, Any] = {
-            "id": str(uuid4())[:8],
-            "title": title,
-            "category": category or "Uncategorized",
-            "ingredients": ingredients,
-            "steps": steps,
-            "created_at": datetime.utcnow().isoformat(timespec="seconds") + "Z",
-        }
+        new_recipe = build_recipe(title, category, ingredients, steps)
         recipes.append(new_recipe)
         save_recipes(recipes)
         return redirect(url_for("recipe_detail", recipe_id=new_recipe["id"]))
