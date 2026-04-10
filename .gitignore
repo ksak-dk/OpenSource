@@ -1,0 +1,20 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.venv/
+venv/
+*.egg-info/
+dist/
+build/
+
+# Flask
+data.json
+instance/
+
+# Sphinx build output
+docs/_build/
+
+# OS
+.DS_Store
+Thumbs.db
